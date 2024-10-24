@@ -11,6 +11,7 @@ class WindowClass(QMainWindow, form_class) :
         self.setupUi(self)
         self.cal = ""
         self.check = True
+        self.listWidget.itemClicked.connect(self.itemClicked)
         for row in range(5):
             for col in range(4):
                 a = self.gridLayout.itemAtPosition(row, col).widget()
@@ -27,6 +28,10 @@ class WindowClass(QMainWindow, form_class) :
                 else:
                     a.clicked.connect( lambda _ , s = a.text(): self.string_stay(s) )
 
+
+    def itemClicked(self, item):
+        self.textEdit.setText(f'{item.text()}')
+        self.cal = item.text()
     def string_m(self):
         self.cal = str( int(self.cal) * -1 )
         self.textEdit.setText(self.cal)
