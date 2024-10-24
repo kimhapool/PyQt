@@ -1,0 +1,67 @@
+import sys
+from PyQt5.QtWidgets import *
+from PyQt5 import uic
+
+
+form_class = uic.loadUiType("calc.ui")[0]
+
+class WindowClass(QMainWindow, form_class) :
+    def __init__(self) :
+        super().__init__()
+        self.setupUi(self)
+        self.cal = ""
+        self.check = True
+        for row in range(5):
+            for col in range(4):
+                a = self.gridLayout.itemAtPosition(row, col).widget()
+                if a.text() == "C":
+                    a.clicked.connect(self.reset)
+                elif a.text() == "=":
+                    a.clicked.connect(self.string_result)
+                elif a.text() == "<-":
+                    a.clicked.connect(self.string_back)
+                elif a.text() == "%":
+                    a.clicked.connect(self.string_p)
+                elif a.text() == "+/-":
+                    a.clicked.connect(self.string_m)
+                else:
+                    a.clicked.connect( lambda _ , s = a.text(): self.string_stay(s) )
+
+    def string_m(self):
+        self.cal = str( int(self.cal) * -1 )
+        self.textEdit.setText(self.cal)
+    def string_p(self):
+        self.cal = str( float(self.cal) / 100 )
+        self.textEdit.setText(self.cal)
+    def string_back(self):
+        self.cal = self.cal[0:-1]
+        self.textEdit.setText(self.cal)
+    def string_result(self):
+        self.listWidget.addItems([self.cal])
+
+        self.cal = str(eval(self.cal))
+        self.textEdit.setText(self.cal)
+        self.check = False
+
+
+    def string_rest(self):
+        self.cal = ""
+        self.textEdit.setText(self.cal)
+    def string_stay(self, s):
+        if self.check or s in "+-*/":
+            self.cal += s
+            self.textEdit.setText(self.cal)
+            self.check = True
+        else:
+            self.cal = s
+            self.textEdit.setText(self.cal)
+            self.check = True
+    def reset(self, s):
+        self.cal = ""
+        self.textEdit.setText(self.cal)
+
+if __name__ == "__main__" :
+    app = QApplication(sys.argv)
+    myWindow = WindowClass()
+    myWindow.show()
+    app.exec_()
