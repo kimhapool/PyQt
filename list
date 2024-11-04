@@ -1,0 +1,37 @@
+import sys
+from PyQt5.QtWidgets import *
+from PyQt5 import uic
+from PyQt5.QtCore import QSize
+
+#UI파일 연결
+#단, UI파일은 Python 코드 파일과 같은 디렉토리에 위치해야한다.
+form_class = uic.loadUiType("list.ui")[0]
+
+#화면을 띄우는데 사용되는 Class 선언
+class WindowClass(QMainWindow, form_class) :
+    def __init__(self) :
+        super().__init__()
+        self.setupUi(self)
+        self.setFixedSize(QSize(950, 600))
+        self.data = {"장우진" : [78, 82, 85] , "윤서현" : [88, 52, 80] , "한도윤" : [92, 64, 71]}
+        self.listWidget.addItems(self.data.keys())
+        #self.tableWidget.setItem(0,0 , QTableWidgetItem("장우진"))
+        self.listWidget.itemClicked.connect(self.up_data)
+
+    def up_data(self, item):
+        ko = self.data[item.text()][0]
+        en = self.data[item.text()][1]
+        mt = self.data[item.text()][2]
+        pe = (ko+en+mt) // 3
+        self.tableWidget.setItem(0, 0, QTableWidgetItem(item.text()))
+        self.tableWidget.setItem(0, 1, QTableWidgetItem(str(ko)))
+        self.tableWidget.setItem(0, 2, QTableWidgetItem(str(en)))
+        self.tableWidget.setItem(0, 3, QTableWidgetItem(str(mt)))
+        self.tableWidget.setItem(0, 4, QTableWidgetItem(str(pe)))
+
+
+if __name__ == "__main__" :
+    app = QApplication(sys.argv)
+    myWindow = WindowClass()
+    myWindow.show()
+    app.exec_()
