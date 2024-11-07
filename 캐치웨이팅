@@ -1,0 +1,52 @@
+import sys
+from PyQt5.QtWidgets import *
+from PyQt5 import uic
+from PyQt5.QtCore import QSize
+import time
+
+#UI파일 연결
+#단, UI파일은 Python 코드 파일과 같은 디렉토리에 위치해야한다.
+form_class = uic.loadUiType("waitinglist.ui")[0]
+
+#화면을 띄우는데 사용되는 Class 선언
+class WindowClass(QMainWindow, form_class) :
+    def __init__(self) :
+        super().__init__()
+        self.setupUi(self)
+        self.setFixedSize(QSize(1105, 642))
+        self.reservations = []
+        self.pushButton.clicked.connect(self.reser)
+        self.listWidget.itemClicked.connect(self.reser_call)
+
+    def reser_call(self, item):
+        name = self.reservations[self.listWidget.currentRow()][2]
+        self.info_event(name)
+
+    def info_event(self, name):
+        answer = QMessageBox.information(self, '경고', f"{str(name)}을 삭제할까요?", QMessageBox.Yes, QMessageBox.No)
+        if answer == QMessageBox.Yes:
+            del self.reservation
+            QMessageBox.information(self, '삭제성공', f"{str(name)}삭제됨")
+        if answer == QMessageBox.No:
+            QMessageBox.information(self, '보존', f"{str(name)}삭제 되지않음")
+
+    def reser(self):
+        name = self.textEdit.toPlainText()
+        phone = self.textEdit_2.toPlainText()
+        if name != "" and phone != "":
+            t = time.localtime()
+            time_s = [t.tm_hour , t.tm_min]
+            self.reservations.append(time_s + [name , phone])
+            self.listWidget.addItem(str(self.reservations[-1]))
+            self.textEdit.clear()
+            self.textEdit_2.clear()
+            self.label.setText(f"{str(len(self.reservations))}명 예약됨")
+
+
+
+
+if __name__ == "__main__" :
+    app = QApplication(sys.argv)
+    myWindow = WindowClass()
+    myWindow.show()
+    app.exec_()
