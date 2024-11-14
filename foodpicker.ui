@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>734</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>100</y>
+      <width>811</width>
+      <height>561</height>
+     </rect>
+    </property>
+    <row>
+     <property name="text">
+      <string>밥</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>국</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>반찬1</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>반찬2</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>반찬3</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>후식</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>단가</string>
+     </property>
+    </row>
+    <column>
+     <property name="text">
+      <string>월</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>화</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>수</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>목</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>금</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>평균가격</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QPushButton" name="pushButton_main">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>60</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>메뉴 생성</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_sa">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>60</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>저장</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_lo">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>60</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>불러오기</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>960</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
