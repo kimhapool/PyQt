@@ -1,0 +1,81 @@
+import sys
+from PyQt5.QtWidgets import *
+from PyQt5 import uic
+from PyQt5.QtCore import QSize
+import random
+
+import os
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+form = resource_path("foodpicker.ui")
+form_class = uic.loadUiType(form)[0]
+
+class WindowClass(QMainWindow, form_class) :
+    def __init__(self) :
+        super().__init__()
+        self.setupUi(self)
+        self.setFixedSize(QSize(960,734))
+        self.rice = {"쌀밥" : 600 , "잡곡밥" : 750 , "강화쌀밥" : 700}
+        self.soup = {"무국" : 500 , "된장국" : 600 , "김치찌개" : 600 , "미역국" : 500}
+        self.b1 = {"제육볶음" : 1000,"닭볶음" : 1000,"치킨" : 900 ,"스테이크" : 1200}
+        self.b2 = {"배추김치" : 500 , "겉절이" : 600 , "열무김치" : 550}
+        self.b3 = {"고사리" : 600 , "시금치" : 600 , "콩나물" : 300 , "고구마나물" : 400}
+        self.af = {"아이스크림" : 800 , "초콜릿" : 600 , "푸딩" : 700 , "음료수" : 500 , "화채" : 700 , "과일" : 500}
+        self.pushButton_main.clicked.connect(self.pick)
+        self.price = 0
+        self.sumpr = 0
+
+    def pick(self):
+        self.sumpr = 0
+        for i in range(5):
+            self.price = 0
+            r_rice = random.choice(list(self.rice.keys()))
+            item = QTableWidgetItem(r_rice)
+            self.tableWidget.setItem(0, i, item)
+
+            self.price += self.rice[r_rice]
+            r_soup = random.choice(list(self.soup.keys()))
+            sitem = QTableWidgetItem(r_soup)
+            self.price += self.soup[r_soup]
+            self.tableWidget.setItem(1, i, sitem)
+
+            r_b1 = random.choice(list(self.b1.keys()))
+            b1item = QTableWidgetItem(r_b1)
+            self.price += self.b1[r_b1]
+            self.tableWidget.setItem(2, i, b1item)
+
+            r_b2 = random.choice(list(self.b2.keys()))
+            b2item = QTableWidgetItem(r_b2)
+            self.price += self.b2[r_b2]
+            self.tableWidget.setItem(3, i, b2item)
+
+            r_b3 = random.choice(list(self.b3.keys()))
+            b3item = QTableWidgetItem(r_b3)
+            self.price += self.b3[r_b3]
+            self.tableWidget.setItem(4, i, b3item)
+
+            r_af = random.choice(list(self.af.keys()))
+            aftitem = QTableWidgetItem(r_af)
+            self.price += self.af[r_af]
+            self.tableWidget.setItem(5, i, aftitem)
+
+            item1 = QTableWidgetItem(str ( self.price ))
+            self.tableWidget.setItem(6, i, item1)
+            self.sumpr += self.price
+        itemp = QTableWidgetItem (str(self.sumpr // 5) )
+        self.tableWidget.setItem(6, 5, itemp)
+        if (self.sumpr // 5) >= 4000:
+            self.pick()
+
+
+
+
+if __name__ == "__main__" :
+    app = QApplication(sys.argv)
+    myWindow = WindowClass()
+    myWindow.show()
+    app.exec_()
