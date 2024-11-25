@@ -1,10 +1,27 @@
+import json
 from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # 세션 및 플래시 메시지에 필요한 시크릿 키
 
-# 간단한 사용자 데이터 (데이터베이스 없이 메모리에서 관리)
-users = {}
+# JSON 파일 경로
+USER_DATA_FILE = 'fla.json'
+
+
+# 사용자 데이터를 JSON 파일에서 불러오기
+def load_user_data():
+    try:
+        with open(USER_DATA_FILE, 'r') as f:
+            data = json.load(f)
+        return data.get('users', {})
+    except FileNotFoundError:
+        return {}
+
+
+# 사용자 데이터를 JSON 파일에 저장하기
+def save_user_data(users):
+    with open(USER_DATA_FILE, 'w') as f:
+        json.dump({'users': users}, f, indent=4)
 
 
 # 로그인 페이지
@@ -13,6 +30,9 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+
+        # 사용자 데이터 불러오기
+        users = load_user_data()
 
         # 사용자 인증
         if username in users and users[username] == password:
@@ -31,11 +51,15 @@ def signup():
         username = request.form['username']
         password = request.form['password']
 
+        # 사용자 데이터 불러오기
+        users = load_user_data()
+
         # 이미 존재하는 사용자 체크
         if username in users:
             return render_template('signup.html', error="이미 존재하는 아이디입니다.")
         else:
             users[username] = password  # 사용자 정보 저장
+            save_user_data(users)  # JSON 파일에 저장
             return redirect(url_for('login'))
 
     return render_template('signup.html')
