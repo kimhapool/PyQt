@@ -1,0 +1,61 @@
+from flask import Flask, render_template, request, redirect, url_for, session
+
+app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # 세션 및 플래시 메시지에 필요한 시크릿 키
+
+# 간단한 사용자 데이터 (데이터베이스 없이 메모리에서 관리)
+users = {}
+
+
+# 로그인 페이지
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # 사용자 인증
+        if username in users and users[username] == password:
+            session['username'] = username  # 세션에 사용자 정보 저장
+            return redirect(url_for('index'))
+        else:
+            return render_template('login.html', error="아이디 또는 비밀번호가 잘못되었습니다.")
+
+    return render_template('login.html')
+
+
+# 회원가입 페이지
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # 이미 존재하는 사용자 체크
+        if username in users:
+            return render_template('signup.html', error="이미 존재하는 아이디입니다.")
+        else:
+            users[username] = password  # 사용자 정보 저장
+            return redirect(url_for('login'))
+
+    return render_template('signup.html')
+
+
+# 메인 페이지
+@app.route('/')
+def index():
+    if 'username' in session:
+        return render_template('index.html', username=session['username'])
+    else:
+        return redirect(url_for('login'))
+
+
+# 로그아웃 처리
+@app.route('/logout')
+def logout():
+    session.pop('username', None)  # 세션에서 사용자 정보 삭제
+    return redirect(url_for('login'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
