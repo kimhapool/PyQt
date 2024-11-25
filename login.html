@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <form method="POST">
+        <h1>로그인</h1>
+        <input type="text" id="username" name="username" placeholder="아이디" required><br>
+        <input type="password" id="password" name="password" placeholder="비밀번호" required><br>
+        <button type="submit">로그인</button>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <a href="{{ url_for('signup') }}">회원가입</a>
+    </form>
+</body>
+</html>
